@@ -1,0 +1,38 @@
+version: "3"
+
+services:
+  #fantasy_app:
+  #  build:
+  #    dockerfile: Dockerfile
+  #  container_name: app_fantasy
+  #  ports:
+  #    - 8080:8080
+  #  networks:
+  #    - fantasyNetwork
+  #  depends_on:
+  #    - fantasy_db
+
+  fantasy_db:
+    image: mysql:5.7.22
+    container_name: db_fantasy
+    restart: always
+    tty: true
+    ports:
+      - 33067:3306
+    environment:
+      MYSQL_DATABASE: fantasy_game
+      MYSQL_USER: fantasy
+      MYSQL_PASSWORD: fantasy
+      MYSQL_ROOT_PASSWORD: rootsql
+    volumes: 
+      - fantasyData:/var/lib/mysql
+    networks:
+      - fantasyNetwork
+
+networks:
+  fantasyNetwork:
+    driver: bridge
+
+volumes: 
+  fantasyData:
+      driver: local
