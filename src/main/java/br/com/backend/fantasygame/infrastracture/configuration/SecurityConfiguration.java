@@ -20,6 +20,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import br.com.backend.fantasygame.domain.repository.RepositorioUsuario;
 import br.com.backend.fantasygame.domain.service.ServicoToken;
 
+import java.util.List;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
@@ -43,7 +45,10 @@ public class SecurityConfiguration {
     @Bean
 	protected CorsConfigurationSource corsConfigurationSource() {
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+
+        CorsConfiguration config = new CorsConfiguration().applyPermitDefaultValues();
+        config.addAllowedMethod(HttpMethod.PUT);
+        source.registerCorsConfiguration("/**", config);
         return source;
 	}
 
