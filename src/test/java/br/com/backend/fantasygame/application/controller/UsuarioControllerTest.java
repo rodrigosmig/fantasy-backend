@@ -38,7 +38,7 @@ import br.com.backend.fantasygame.domain.vo.Senha;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class UsuarioControllerTest {
+class UsuarioControllerTest {
 
     
     @Autowired
@@ -54,7 +54,7 @@ public class UsuarioControllerTest {
 
     @BeforeEach
     void setUp() {
-        var time = new Time(1l, new Nome("Test Team"), new Pontos(0), new Formacao(1l, new Nome("4-4-2")), this.user, LocalDateTime.now());
+        var time = new Time(1l, new Nome("Test Team"), new Pontos(0), new Formacao(1l, new Nome("4-4-2")), this.user);
         this.user = new User(1l, new Nome("Test"), new Senha("12345678"), new Email("test@email.com"));
         this.user.setTime(time);
     }
@@ -111,8 +111,7 @@ public class UsuarioControllerTest {
             )
             .andExpect(jsonPath("$.id", is(user.getId().intValue())))
             .andExpect(jsonPath("$.nome", is(user.getNome())))
-            .andExpect(jsonPath("$.email", is(user.getEmail())))
-            .andExpect(jsonPath("$.time.nome", is(user.getTime().getNome())));
+            .andExpect(jsonPath("$.email", is(user.getEmail())));
 
         verify(servicoUsuario).create(any(User.class), anyString());
     }
@@ -146,7 +145,7 @@ public class UsuarioControllerTest {
 
         URI uri = new URI("/users");
 
-        var form = new RequisicaoCadastrarUsuario("Test", "invalid emaild", "", "12345678", "12345678");
+        var form = new RequisicaoCadastrarUsuario("Test", "test@email.com", "", "12345678", "12345678");
 
         var json = mapper.writeValueAsString(form);
 

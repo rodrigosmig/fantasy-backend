@@ -2,7 +2,9 @@ package br.com.backend.fantasygame.domain.entity;
 
 import br.com.backend.fantasygame.domain.vo.Nome;
 import br.com.backend.fantasygame.domain.vo.Pontos;
+import lombok.AllArgsConstructor;
 
+@AllArgsConstructor
 public class Jogador {
 
     private Long id;
@@ -10,14 +12,6 @@ public class Jogador {
     private Pontos pontos;    
     private Posicao posicao;
     private Pais pais;
-    
-    public Jogador(Long id, Nome nome, Pontos pontos, Posicao posicao, Pais pais) {
-        this.id = id;
-        this.nome = nome;
-        this.pontos = pontos;
-        this.posicao = posicao;
-        this.pais = pais;
-    }
 
     public Long getId() {
         return id;

@@ -1,19 +1,17 @@
 package br.com.backend.fantasygame.infrastracture.schema;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import br.com.backend.fantasygame.domain.entity.Jogador;
 import br.com.backend.fantasygame.domain.vo.Nome;
 import br.com.backend.fantasygame.domain.vo.Pontos;
+import lombok.NoArgsConstructor;
+
+import java.util.Set;
 
 @Entity
 @Table(name = "jogadores")
+@NoArgsConstructor
 public class JogadorSchema {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,8 +28,8 @@ public class JogadorSchema {
     @JoinColumn(name = "pais_id", nullable = false)
     private PaisSchema pais;
 
-    public JogadorSchema() {
-    }
+    @ManyToMany(mappedBy = "jogadores")
+    private Set<TimeSchema> times;
 
     public JogadorSchema(Jogador jogador) {
         this.id = jogador.getId();
