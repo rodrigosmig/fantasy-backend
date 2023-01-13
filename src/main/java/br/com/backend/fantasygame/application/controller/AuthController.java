@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.backend.fantasygame.application.dto.TokenDto;
+import br.com.backend.fantasygame.application.dto.TokenDTO;
 import br.com.backend.fantasygame.domain.request.RequisicaoLogin;
 import br.com.backend.fantasygame.application.service.ServicoAuth;
 
@@ -24,9 +24,9 @@ public class AuthController {
     private ServicoAuth servicoAuth;
 
     @PostMapping("/login")
-    public ResponseEntity<TokenDto> authenticate(@RequestBody @Valid RequisicaoLogin requisicao) {
+    public ResponseEntity<TokenDTO> authenticate(@RequestBody @Valid RequisicaoLogin requisicao) {
         String token = servicoAuth.authenticate(requisicao.convert(), authManager);
         
-        return ResponseEntity.ok(new TokenDto(token));
+        return ResponseEntity.ok(new TokenDTO(token));
     }    
 }

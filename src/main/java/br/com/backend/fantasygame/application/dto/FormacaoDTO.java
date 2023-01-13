@@ -1,15 +1,14 @@
 package br.com.backend.fantasygame.application.dto;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import br.com.backend.fantasygame.domain.entity.Formacao;
 
-public class FormacaoDto {
+import java.util.List;
+
+public class FormacaoDTO {
     private Long id;
     private String nome;
 
-    public FormacaoDto(Formacao formacao) {
+    public FormacaoDTO(Formacao formacao) {
         this.id = formacao.getId();
         this.nome = formacao.getNome();
     }
@@ -22,9 +21,9 @@ public class FormacaoDto {
         return nome;
     }
 
-    public static List<FormacaoDto> ToList(List<Formacao> formacoes) {
+    public static List<FormacaoDTO> convertToList(List<Formacao> formacoes) {
         return formacoes.stream()
-            .map(FormacaoDto::new)
-            .collect(Collectors.toList());
+            .map(FormacaoDTO::new)
+                .toList();
     }
 }

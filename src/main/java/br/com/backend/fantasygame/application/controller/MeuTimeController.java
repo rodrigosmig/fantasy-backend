@@ -1,7 +1,7 @@
 package br.com.backend.fantasygame.application.controller;
 
 import br.com.backend.fantasygame.domain.request.RequisicaoAlterarTime;
-import br.com.backend.fantasygame.application.dto.TimeDto;
+import br.com.backend.fantasygame.application.dto.TimeDTO;
 import br.com.backend.fantasygame.domain.entity.Time;
 import br.com.backend.fantasygame.domain.service.ServicoTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,16 +17,16 @@ public class MeuTimeController {
     private ServicoTime servicoTime;
 
     @GetMapping
-    public ResponseEntity<TimeDto> meuTime() {
+    public ResponseEntity<TimeDTO> meuTime() {
         Time team = servicoTime.obterTimeDoUsuario();
 
-        return ResponseEntity.ok(new TimeDto(team));
+        return ResponseEntity.ok(new TimeDTO(team));
     }
 
     @PutMapping
-    public ResponseEntity<TimeDto> alterarMeuTime(@RequestBody @Valid RequisicaoAlterarTime requisicao) {
+    public ResponseEntity<TimeDTO> alterarMeuTime(@RequestBody @Valid RequisicaoAlterarTime requisicao) {
         Time team = servicoTime.alterarTime(requisicao);
 
-        return ResponseEntity.ok(new TimeDto(team));
+        return ResponseEntity.ok(new TimeDTO(team));
     }
 }

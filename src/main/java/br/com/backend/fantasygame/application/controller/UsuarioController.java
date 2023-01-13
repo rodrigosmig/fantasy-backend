@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.backend.fantasygame.application.dto.UserDto;
+import br.com.backend.fantasygame.application.dto.UserDTO;
 import br.com.backend.fantasygame.domain.request.RequisicaoCadastrarUsuario;
 import br.com.backend.fantasygame.domain.service.ServicoUsuario;
 
@@ -25,16 +25,16 @@ public class UsuarioController {
     
     @PostMapping
     @Transactional
-    public ResponseEntity<UserDto> register(@RequestBody @Valid RequisicaoCadastrarUsuario form) {
+    public ResponseEntity<UserDTO> register(@RequestBody @Valid RequisicaoCadastrarUsuario form) {
         var user = servicoUsuario.create(form.ToUser(), form.getNomeTime());
         
-        return ResponseEntity.status(HttpStatus.CREATED).body(new UserDto(user));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new UserDTO(user));
     }
 
     @GetMapping("/me")
-    public ResponseEntity<UserDto> me() {
+    public ResponseEntity<UserDTO> me() {
         var user = servicoUsuario.getUser();
 
-        return ResponseEntity.ok(new UserDto(user));
+        return ResponseEntity.ok(new UserDTO(user));
     }
 }
