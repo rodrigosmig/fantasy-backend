@@ -1,23 +1,21 @@
 package br.com.backend.fantasygame.infrastracture.schema;
 
 import java.time.LocalDateTime;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import br.com.backend.fantasygame.domain.entity.Time;
 import br.com.backend.fantasygame.domain.vo.Nome;
 import br.com.backend.fantasygame.domain.vo.Pontos;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "times")
+@NoArgsConstructor
+@Getter
 public class TimeSchema {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,8 +35,13 @@ public class TimeSchema {
 
     private LocalDateTime criadoEm = LocalDateTime.now();
 
-    public TimeSchema() {
-    }
+    @ManyToMany
+    @JoinTable(
+        name = "time_jogador",
+        joinColumns = @JoinColumn(name = "time_id"),
+        inverseJoinColumns = @JoinColumn(name = "jogador_id")
+    )
+    private Set<JogadorSchema> jogadores;
 
     public TimeSchema(Time time) {
         this.id = time.getId();
@@ -47,40 +50,25 @@ public class TimeSchema {
         this.formacao = new FormacaoSchema(time.getFormacao());
         this.user = new UserSchema(time.getUser());
         this.criadoEm = time.getCriadoEm();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public Integer getPontos() {
-        return pontos;
-    }
-
-    public FormacaoSchema getFormacao() {
-        return formacao;
-    }
-
-    public UserSchema getUser() {
-        return user;
-    }
-
-    public LocalDateTime getCriadoEm() {
-        return criadoEm;
+        this.jogadores = time.getJogadores()
+                .stream()
+                .map(JogadorSchema::new)
+                .collect(Collectors.toSet());
     }
 
     public Time toTime() {
+        var novosJogadores = jogadores.stream()
+                .map(JogadorSchema::toJogador)
+                .collect(Collectors.toSet());
+
         return new Time(
             id, 
             new Nome(nome), 
             new Pontos(pontos),
             this.getFormacao().toFormacao(),
             user.toUser(), 
-            criadoEm
+            criadoEm,
+            novosJogadores
         );
     }
 }

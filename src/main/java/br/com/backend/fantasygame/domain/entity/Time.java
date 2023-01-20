@@ -1,6 +1,8 @@
 package br.com.backend.fantasygame.domain.entity;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 import br.com.backend.fantasygame.domain.vo.Nome;
 import br.com.backend.fantasygame.domain.vo.Pontos;
@@ -23,11 +25,16 @@ public class Time {
     @Getter
     private LocalDateTime criadoEm;
 
+    @Getter
+    @Setter
+    private Set<Jogador> jogadores;
+
     public Time(Nome nome, Pontos pontos, User user) {
         this.nome = nome;
         this.pontos = pontos;
         this.user = user;
         this.criadoEm = LocalDateTime.now();
+        this.jogadores = new HashSet<>();
     }
 
     public Time(Long id, Nome nome, Pontos pontos, Formacao formacao, User user) {
@@ -37,6 +44,7 @@ public class Time {
         this.formacao = formacao;
         this.user = user;
         this.criadoEm = LocalDateTime.now();
+        this.jogadores = new HashSet<>();
     }
 
     public String getNome() {

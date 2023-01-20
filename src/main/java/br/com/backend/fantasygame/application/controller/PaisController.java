@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.backend.fantasygame.application.dto.PaisDto;
+import br.com.backend.fantasygame.application.dto.PaisDTO;
 import br.com.backend.fantasygame.domain.exception.PaisNaoEncontradoException;
 import br.com.backend.fantasygame.domain.service.ServicoPais;
 
@@ -21,18 +21,18 @@ public class PaisController {
     private ServicoPais servicoPais;
     
     @GetMapping
-    public ResponseEntity<List<PaisDto>> list() {
+    public ResponseEntity<List<PaisDTO>> list() {
         var countries = servicoPais.getAll();
 
-        return ResponseEntity.ok(PaisDto.convertToList(countries));
+        return ResponseEntity.ok(PaisDTO.convertToList(countries));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PaisDto> getOne(@PathVariable Long id) {
+    public ResponseEntity<PaisDTO> getOne(@PathVariable Long id) {
         var optional = servicoPais.findById(id);
 
-        var country = optional.orElseThrow(() -> new PaisNaoEncontradoException());
+        var country = optional.orElseThrow(PaisNaoEncontradoException::new);
         
-        return ResponseEntity.ok(new PaisDto(country));
+        return ResponseEntity.ok(new PaisDTO(country));
     }
 }

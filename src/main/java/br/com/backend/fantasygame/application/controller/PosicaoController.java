@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.backend.fantasygame.application.dto.PosicaoDto;
+import br.com.backend.fantasygame.application.dto.PosicaoDTO;
 import br.com.backend.fantasygame.domain.exception.PosicaoNaoEncontradaException;
 import br.com.backend.fantasygame.domain.service.ServicoPosicao;
 
@@ -21,18 +21,18 @@ public class PosicaoController {
     private ServicoPosicao servicoPosicao;
 
     @GetMapping
-    public ResponseEntity<List<PosicaoDto>> list() {
-        var countries = servicoPosicao.getAll();
+    public ResponseEntity<List<PosicaoDTO>> list() {
+        var positions = servicoPosicao.getAll();
 
-        return ResponseEntity.ok(PosicaoDto.convertToList(countries));
+        return ResponseEntity.ok(PosicaoDTO.convertToList(positions));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PosicaoDto> getOne(@PathVariable Long id) {
+    public ResponseEntity<PosicaoDTO> getOne(@PathVariable Long id) {
         var optional = servicoPosicao.findById(id);
 
-        var position = optional.orElseThrow(() -> new PosicaoNaoEncontradaException());
+        var position = optional.orElseThrow(PosicaoNaoEncontradaException::new);
         
-        return ResponseEntity.ok(new PosicaoDto(position));
+        return ResponseEntity.ok(new PosicaoDTO(position));
     }
 }

@@ -4,11 +4,11 @@ import java.util.List;
 
 import br.com.backend.fantasygame.domain.entity.Posicao;
 
-public class PosicaoDto {
+public class PosicaoDTO {
     private Long id;
     private String nome;
 
-    public PosicaoDto(Posicao posicao) {
+    public PosicaoDTO(Posicao posicao) {
         this.id = posicao.getId();
         this.nome = posicao.getNome();
     }
@@ -21,9 +21,9 @@ public class PosicaoDto {
         return nome;
     }
 
-    public static List<PosicaoDto> convertToList(List<Posicao> posicoes) {
+    public static List<PosicaoDTO> convertToList(List<Posicao> posicoes) {
         return posicoes.stream()
-            .map(PosicaoDto::new)
+            .map(PosicaoDTO::new)
             .toList();
     }
 }

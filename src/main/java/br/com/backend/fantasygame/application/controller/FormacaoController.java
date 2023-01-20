@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.backend.fantasygame.application.dto.FormacaoDto;
+import br.com.backend.fantasygame.application.dto.FormacaoDTO;
 import br.com.backend.fantasygame.domain.entity.Formacao;
 import br.com.backend.fantasygame.domain.exception.FormacaoNaoEncontradaException;
 import br.com.backend.fantasygame.domain.service.ServicoFormacao;
@@ -22,18 +22,18 @@ public class FormacaoController {
     private ServicoFormacao servicoFormacao;
 
     @GetMapping
-    public ResponseEntity<List<FormacaoDto>> list() {
+    public ResponseEntity<List<FormacaoDTO>> list() {
         var formations = servicoFormacao.getAll();
 
-        return ResponseEntity.ok(FormacaoDto.ToList(formations));
+        return ResponseEntity.ok(FormacaoDTO.convertToList(formations));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<FormacaoDto> show(@PathVariable Long id) {
+    public ResponseEntity<FormacaoDTO> show(@PathVariable Long id) {
         var optional = servicoFormacao.findById(id);
 
         Formacao formation = optional.orElseThrow(FormacaoNaoEncontradaException::new);
 
-        return ResponseEntity.ok(new FormacaoDto(formation));
+        return ResponseEntity.ok(new FormacaoDTO(formation));
     }
 }
