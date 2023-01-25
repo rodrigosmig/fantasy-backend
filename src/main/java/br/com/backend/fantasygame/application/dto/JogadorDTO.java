@@ -3,6 +3,7 @@ package br.com.backend.fantasygame.application.dto;
 import java.util.List;
 
 import br.com.backend.fantasygame.domain.entity.Jogador;
+import org.springframework.data.domain.Page;
 
 public class JogadorDTO {
 
@@ -40,9 +41,7 @@ public class JogadorDTO {
         return pais;
     }
 
-    public static List<JogadorDTO> toList(List<Jogador> jogadores) {
-        return jogadores.stream()
-        .map(JogadorDTO::new)
-        .toList();
+    public static Page<JogadorDTO> toDTO(Page<Jogador> jogadores) {
+        return jogadores.map(JogadorDTO::new);
     }
 }
