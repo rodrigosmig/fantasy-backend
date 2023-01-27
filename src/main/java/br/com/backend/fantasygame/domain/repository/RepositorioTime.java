@@ -2,6 +2,7 @@ package br.com.backend.fantasygame.domain.repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import br.com.backend.fantasygame.domain.entity.Time;
 import br.com.backend.fantasygame.domain.entity.User;

@@ -11,6 +11,7 @@ import static org.mockito.Mockito.when;
 import java.util.List;
 import java.util.Optional;
 
+import br.com.backend.fantasygame.domain.repository.RepositorioJogador;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -38,13 +39,15 @@ public class ServicoTimeImplTest {
     private RepositorioTime repositorioTime;
     @Mock
     private RepositorioFormacao repositorioFormacao;
+    @Mock
+    private RepositorioJogador repositorioJogador;
     private ServicoTime servicoTime;
     private User user;
     private Time time;
 
     @BeforeEach
     void setUp() {
-        this.servicoTime = new ServicoTimeImpl(repositorioTime, repositorioFormacao);
+        this.servicoTime = new ServicoTimeImpl(repositorioTime, repositorioFormacao, repositorioJogador);
 
         this.user = new User(1l, new Nome("Test"), new Senha("12345678"), new Email("test@email.com"));
         this.time = new Time(1l, new Nome("Test Team"), new Pontos(0), new Formacao(1l, new Nome("4-4-2")), this.user);

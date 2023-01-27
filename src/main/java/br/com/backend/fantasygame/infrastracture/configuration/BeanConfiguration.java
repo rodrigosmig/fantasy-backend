@@ -54,8 +54,10 @@ public class BeanConfiguration {
     }
 
     @Bean
-    ServicoTime servicoTime(RepositorioTime repositorioTime, RepositorioFormacao repositorioFormacao) {
-        return new ServicoTimeImpl(repositorioTime, repositorioFormacao);
+    ServicoTime servicoTime(RepositorioTime repositorioTime,
+                            RepositorioFormacao repositorioFormacao,
+                            RepositorioJogador repositorioJogador) {
+        return new ServicoTimeImpl(repositorioTime, repositorioFormacao, repositorioJogador);
     }
 
     @Bean

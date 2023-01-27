@@ -1,33 +1,35 @@
 package br.com.backend.fantasygame.application.service;
 
 import br.com.backend.fantasygame.domain.entity.Formacao;
+import br.com.backend.fantasygame.domain.entity.Jogador;
 import br.com.backend.fantasygame.domain.entity.Time;
 import br.com.backend.fantasygame.domain.entity.User;
 import br.com.backend.fantasygame.domain.exception.FormacaoNaoEncontradaException;
 import br.com.backend.fantasygame.domain.repository.RepositorioFormacao;
+import br.com.backend.fantasygame.domain.repository.RepositorioJogador;
 import br.com.backend.fantasygame.domain.repository.RepositorioTime;
 import br.com.backend.fantasygame.domain.request.RequisicaoAlterarTime;
+import br.com.backend.fantasygame.domain.request.RequisicaoSalvarJogadores;
 import br.com.backend.fantasygame.domain.service.ServicoTime;
 import br.com.backend.fantasygame.domain.vo.Nome;
 import br.com.backend.fantasygame.domain.vo.Pontos;
 import br.com.backend.fantasygame.infrastracture.schema.UserSchema;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
+@AllArgsConstructor
 public class ServicoTimeImpl implements ServicoTime {
 
     private final RepositorioTime repositorioTime;
     private final RepositorioFormacao repositorioFormacao;
+    private final RepositorioJogador repositorioJogador;
 
     private static final Long DEFAULT_FORMATION_ID = 1L;
-
-    public ServicoTimeImpl(RepositorioTime repositorioTime, RepositorioFormacao repositorioFormacao) {
-        this.repositorioTime = repositorioTime;
-        this.repositorioFormacao = repositorioFormacao;
-    }
 
     @Transactional
     @Override
@@ -70,5 +72,18 @@ public class ServicoTimeImpl implements ServicoTime {
         time.setNome(requisicao.getNomeTime());
 
         return repositorioTime.save(time);
+    }
+
+    @Override
+    @Transactional
+    public Time salvarJogadores(RequisicaoSalvarJogadores requisicao) {
+        var jogadores = repositorioJogador.buscarJogadores(requisicao.getJogadoresIds());
+        var time = this.obterTimeDoUsuario();
+
+        time.setJogadores(jogadores);
+
+        repositorioTime.save(time);
+
+        return time;
     }
 }

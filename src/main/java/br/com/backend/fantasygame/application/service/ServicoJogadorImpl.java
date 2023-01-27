@@ -5,7 +5,9 @@ import java.util.Optional;
 
 import br.com.backend.fantasygame.domain.entity.Jogador;
 import br.com.backend.fantasygame.domain.repository.RepositorioJogador;
+import br.com.backend.fantasygame.domain.request.RequisicaoListarJogador;
 import br.com.backend.fantasygame.domain.service.ServicoJogador;
+import org.springframework.data.domain.Page;
 
 public class ServicoJogadorImpl implements ServicoJogador {
 
@@ -21,7 +23,7 @@ public class ServicoJogadorImpl implements ServicoJogador {
     }
 
     @Override
-    public List<Jogador> getAll(int page, int size) {
-        return repositorioJogador.findAll(page, size);
+    public Page<Jogador> getAll(int page, int size, RequisicaoListarJogador requisicao) {
+        return repositorioJogador.findAll(page, size, requisicao);
     }    
 }
