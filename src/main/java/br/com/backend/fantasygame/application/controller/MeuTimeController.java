@@ -3,8 +3,10 @@ package br.com.backend.fantasygame.application.controller;
 import br.com.backend.fantasygame.domain.request.RequisicaoAlterarTime;
 import br.com.backend.fantasygame.application.dto.TimeDTO;
 import br.com.backend.fantasygame.domain.entity.Time;
+import br.com.backend.fantasygame.domain.request.RequisicaoSalvarJogadores;
 import br.com.backend.fantasygame.domain.service.ServicoTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,5 +30,12 @@ public class MeuTimeController {
         Time team = servicoTime.alterarTime(requisicao);
 
         return ResponseEntity.ok(new TimeDTO(team));
+    }
+
+    @PostMapping("/jogadores")
+    public ResponseEntity<Integer> salvarJogadores(@RequestBody @Valid RequisicaoSalvarJogadores requisicao) {
+        servicoTime.salvarJogadores(requisicao);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

@@ -1,15 +1,15 @@
 package br.com.backend.fantasygame.application.repository;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import br.com.backend.fantasygame.application.specification.JogadorSpecification;
 import br.com.backend.fantasygame.domain.request.RequisicaoListarJogador;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
@@ -23,11 +23,11 @@ import br.com.backend.fantasygame.infrastracture.schema.JogadorSchema;
 public class RepositorioJogadorImpl implements RepositorioJogador {
 
     @Autowired
-    private RepositorioJogadorJpa jogadorRepository;
+    private RepositorioJogadorJpa repositorioJogador;
 
     @Override
     public Optional<Jogador> findById(Long id) {
-        var jogadorSchema = jogadorRepository.findById(id);
+        var jogadorSchema = repositorioJogador.findById(id);
 
         return jogadorSchema.map(JogadorSchema::toJogador);
     }
@@ -37,7 +37,7 @@ public class RepositorioJogadorImpl implements RepositorioJogador {
         var pageable = PageRequest.of(page, size, Sort.by("nome"));
 
         if (requisicao.isRequestNull()) {
-            return jogadorRepository.findAll(pageable).map(JogadorSchema::toJogador);
+            return repositorioJogador.findAll(pageable).map(JogadorSchema::toJogador);
         }
 
         Specification<JogadorSchema> specification = null;
@@ -66,8 +66,21 @@ public class RepositorioJogadorImpl implements RepositorioJogador {
             }
         }
 
-        return jogadorRepository.findAll(Specification.where(specification), pageable)
+        return repositorioJogador.findAll(Specification.where(specification), pageable)
                 .map(JogadorSchema::toJogador);
     }
-    
+
+    @Override
+    public Boolean existsPlayers(Set<Long> idsJogadores) {
+        return repositorioJogador.countAllByIdIn(idsJogadores).equals(idsJogadores.size());
+    }
+
+    @Override
+    public Set<Jogador> buscarJogadores(Set<Long> ids) {
+        return repositorioJogador.findByIdIn(ids)
+                .stream()
+                .map(JogadorSchema::toJogador)
+                .collect(Collectors.toSet());
+    }
+
 }
